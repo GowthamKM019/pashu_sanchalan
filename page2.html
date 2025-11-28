@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Add Animal Data – Page 2</title>
+<style>
+    body { margin:0; padding:0; font-family:"Segoe UI",sans-serif; background:#e8f3ef; display:flex; justify-content:center; padding-top:40px; }
+    .container { width:90%; max-width:1000px; }
+    h1 { font-size:32px; margin-bottom:25px; color:#253f39; }
+    .form-wrapper { display:flex; justify-content:space-between; gap:25px; }
+    .form-card { background:#cfe3e3; padding:35px 30px; border-radius:20px; width:48%; box-shadow:0 8px 25px rgba(0,0,0,0.12); }
+    .input-group { margin-bottom:25px; }
+    label { display:block; font-size:15px; margin-bottom:6px; color:#344e4a; font-weight:550; }
+    input, select { width:90%; padding:12px 14px; border:2px solid #d3dcdc; border-radius:12px; font-size:15px; outline:none; transition:0.3s; background:white; }
+    input:focus, select:focus { border-color:#5f9f8f; box-shadow:0 0 8px rgba(95,159,143,0.3); }
+    .button-row { width:100%; margin-top:25px; display:flex; justify-content:space-between; }
+    .back-btn { background:#9aa7a5; padding:12px 24px; border-radius:10px; color:white; font-size:17px; border:none; cursor:pointer; transition:0.2s; }
+    .back-btn:hover { background:#7b8886; }
+    .next-btn { background:#5f9f8f; padding:12px 24px; border-radius:10px; color:white; font-size:17px; border:none; cursor:pointer; transition:0.2s; }
+    .next-btn:hover { background:#4d8477; }
+    .small-note { font-size:13px; color:#465a57; margin-top:10px; }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Add Animal Data – Page 2</h1>
+    <div class="form-wrapper">
+        <!-- LEFT -->
+        <div class="form-card">
+            <div class="input-group">
+                <label for="milk">Milk (L/day)</label>
+                <input id="milk" type="number" step="0.1" placeholder="Enter milk per day" />
+            </div>
+            <div class="input-group">
+                <label for="fat">Fat (%)</label>
+                <input id="fat" type="number" step="0.1" placeholder="Enter fat percentage" />
+            </div>
+            <div class="input-group">
+                <label for="lactation">Lactation Number</label>
+                <input id="lactation" type="number" min="0" placeholder="Ex: 1, 2, 3" />
+            </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="form-card">
+            <div class="input-group">
+                <label for="maleCalf">Male Calf Count</label>
+                <input id="maleCalf" type="number" min="0" placeholder="Enter male calf count" />
+            </div>
+            <div class="input-group">
+                <label for="femaleCalf">Female Calf Count</label>
+                <input id="femaleCalf" type="number" min="0" placeholder="Enter female calf count" />
+            </div>
+            <div class="input-group">
+                <label for="origin">Buy or Home Born</label>
+                <select id="origin">
+                    <option value="">Select</option>
+                    <option value="Home Born">Home Born</option>
+                    <option value="Purchased">Purchased</option>
+                </select>
+            </div>
+            <div class="small-note">You can go back to previous page to change ID or basic details.</div>
+        </div>
+    </div>
+
+    <div class="button-row">
+        <button class="back-btn" onclick="goBack()">← Back</button>
+        <div>
+            <button class="next-btn" id="toPage3">Next →</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'pashu_cows';
+function readCows(){ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+function writeCows(obj){ localStorage.setItem(STORAGE_KEY, JSON.stringify(obj)); }
+
+function getCurrentId(){
+    return localStorage.getItem('currentCowId') || '';
+}
+
+function goBack(){ history.back(); }
+
+// populate if draft exists
+window.addEventListener('DOMContentLoaded', () => {
+    const id = getCurrentId();
+    if (!id) { alert('No active Cow ID. Please start from Page 1.'); window.location.href='page1.html'; return; }
+    const cows = readCows();
+    const cow = cows[id] || {};
+
+    document.getElementById('milk').value = cow.milk || '';
+    document.getElementById('fat').value = cow.fat || '';
+    document.getElementById('lactation').value = cow.lactation || '';
+    document.getElementById('maleCalf').value = cow.maleCalf || '';
+    document.getElementById('femaleCalf').value = cow.femaleCalf || '';
+    document.getElementById('origin').value = cow.origin || '';
+});
+
+document.getElementById('toPage3').addEventListener('click', () => {
+    const id = getCurrentId();
+    if (!id) { alert('Missing Cow ID. Start from Page 1.'); window.location.href='page1.html'; return; }
+
+    const milk = document.getElementById('milk').value;
+    const fat = document.getElementById('fat').value;
+    const lactation = document.getElementById('lactation').value;
+    const maleCalf = document.getElementById('maleCalf').value;
+    const femaleCalf = document.getElementById('femaleCalf').value;
+    const origin = document.getElementById('origin').value;
+
+    const cows = readCows();
+    cows[id] = cows[id] || {};
+    cows[id].milk = milk || cows[id].milk || '';
+    cows[id].fat = fat || cows[id].fat || '';
+    cows[id].lactation = lactation || cows[id].lactation || '';
+    cows[id].maleCalf = maleCalf || cows[id].maleCalf || 0;
+    cows[id].femaleCalf = femaleCalf || cows[id].femaleCalf || 0;
+    cows[id].origin = origin || cows[id].origin || '';
+
+    writeCows(cows);
+    window.location.href = 'page3.html';
+});
+</script>
+</body>
+</html>

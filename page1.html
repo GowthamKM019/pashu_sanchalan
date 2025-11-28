@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Add Animal Data – Page 1</title>
+<style>
+    /* theme kept from your original */
+    body { margin:0; padding:0; font-family:"Segoe UI",sans-serif; background:#e8f3ef; display:flex; justify-content:center; padding-top:40px; }
+    .container { width:90%; max-width:1000px; }
+    h1 { font-size:32px; margin-bottom:25px; color:#253f39; }
+    .form-wrapper { display:flex; justify-content:space-between; gap:25px; }
+    .form-card { background:#cfe3e3; padding:35px 30px; border-radius:20px; width:50%; box-shadow:0 8px 25px rgba(0,0,0,0.12); }
+    .input-group { margin-bottom:25px; }
+    label { display:block; font-size:15px; margin-bottom:6px; color:#344e4a; font-weight:550; }
+    input { width:90%; padding:12px 14px; border:2px solid #d3dcdc; border-radius:12px; font-size:15px; outline:none; transition:0.3s; }
+    input:focus { border-color:#5f9f8f; box-shadow:0 0 8px rgba(95,159,143,0.3); }
+    .next-btn { margin-top:20px; background:#5f9f8f; padding:12px 24px; border-radius:10px; color:white; font-size:17px; border:none; cursor:pointer; float:right; transition:0.2s ease; }
+    .next-btn:hover { background:#4d8477; }
+    .error { color:#b00020; font-size:13px; margin-top:6px; display:none; }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Add Animal Data</h1>
+    <div class="form-wrapper">
+
+        <!-- LEFT CARD -->
+        <div class="form-card">
+            <div class="input-group">
+                <label for="cowId">Cow Number (ID) <small style="color:#666;font-weight:500">*required</small></label>
+                <input id="cowId" type="text" placeholder="Enter cow ID (unique)" />
+                <div id="idError" class="error">Cow ID is required</div>
+            </div>
+
+            <div class="input-group">
+                <label for="breed">Breed</label>
+                <input id="breed" type="text" placeholder="Ex: Jersey, Holstein..." />
+            </div>
+
+            <div class="input-group">
+                <label for="gender">Gender</label>
+                <input id="gender" type="text" placeholder="Male / Female" />
+            </div>
+        </div>
+
+        <!-- RIGHT CARD -->
+        <div class="form-card">
+            <div class="input-group">
+                <label for="birthDate">Birth Date</label>
+                <input id="birthDate" type="date" />
+            </div>
+
+            <div class="input-group">
+                <label for="age">Age (years)</label>
+                <input id="age" type="number" min="0" placeholder="In years" />
+            </div>
+
+            <div class="input-group">
+                <label for="color">Color</label>
+                <input id="color" type="text" placeholder="Ex: Brown, Black, White" />
+            </div>
+
+            <button class="next-btn" id="toPage2">Next →</button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+/* storage helpers */
+const STORAGE_KEY = 'pashu_cows';
+function readCows() {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+}
+function writeCows(obj) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(obj));
+}
+
+document.getElementById('toPage2').addEventListener('click', function() {
+    const cowId = document.getElementById('cowId').value.trim();
+    const idError = document.getElementById('idError');
+    if (!cowId) { idError.style.display = 'block'; return; }
+    idError.style.display = 'none';
+
+    const breed = document.getElementById('breed').value.trim();
+    const gender = document.getElementById('gender').value.trim();
+    const birthDate = document.getElementById('birthDate').value;
+    const age = document.getElementById('age').value;
+    const color = document.getElementById('color').value.trim();
+
+    // read existing cows
+    const cows = readCows();
+
+    // create or update partial record
+    cows[cowId] = cows[cowId] || {};
+    cows[cowId].id = cowId;
+    cows[cowId].breed = breed || (cows[cowId].breed || '');
+    cows[cowId].gender = gender || (cows[cowId].gender || '');
+    cows[cowId].birthDate = birthDate || (cows[cowId].birthDate || '');
+    cows[cowId].age = age || (cows[cowId].age || '');
+    cows[cowId].color = color || (cows[cowId].color || '');
+
+    writeCows(cows);
+    // store current working cow id
+    localStorage.setItem('currentCowId', cowId);
+
+    // go to page2
+    window.location.href = 'page2.html';
+});
+</script>
+</body>
+</html>

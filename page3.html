@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Add Animal Data – Page 3</title>
+<style>
+    body { margin:0; padding:0; font-family:"Segoe UI",sans-serif; background:#e8f3ef; display:flex; justify-content:center; padding-top:40px; }
+    .container { width:90%; max-width:1000px; }
+    h1 { font-size:32px; margin-bottom:25px; color:#253f39; }
+    .form-wrapper { display:flex; justify-content:space-between; gap:25px; }
+    .form-card { background:#cfe3e3; padding:35px 30px; border-radius:20px; width:48%; box-shadow:0 8px 25px rgba(0,0,0,0.12); }
+    .input-group { margin-bottom:25px; }
+    label { display:block; font-size:15px; margin-bottom:6px; color:#344e4a; font-weight:550; }
+    input, select, textarea { width:90%; padding:12px 14px; border:2px solid #d3dcdc; border-radius:12px; font-size:15px; outline:none; transition:0.3s; background:white; }
+    input:focus, select:focus, textarea:focus { border-color:#5f9f8f; box-shadow:0 0 8px rgba(95,159,143,0.3); }
+    textarea { resize:none; height:95px; }
+    .btn-row { width:100%; margin-top:25px; display:flex; justify-content:space-between; }
+    .back-btn { background:#9aa7a5; padding:12px 24px; border-radius:10px; color:white; font-size:17px; border:none; cursor:pointer; transition:0.2s ease; }
+    .back-btn:hover { background:#7b8886; }
+    .submit-btn { background:#5f9f8f; padding:12px 24px; border-radius:10px; color:white; font-size:17px; border:none; cursor:pointer; transition:0.2s ease; }
+    .submit-btn:hover { background:#4d8477; }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Add Animal Data – Page 3</h1>
+    <div class="form-wrapper">
+        <!-- LEFT -->
+        <div class="form-card">
+            <div class="input-group">
+                <label for="insemination">Insemination Date</label>
+                <input id="insemination" type="date" />
+            </div>
+            <div class="input-group">
+                <label for="deworm">Deworm Date</label>
+                <input id="deworm" type="date" />
+            </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="form-card">
+            <div class="input-group">
+                <label for="pregnancy">Pregnancy Confirmation</label>
+                <select id="pregnancy">
+                    <option value="">Select</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="medicines">Medicines Given</label>
+                <textarea id="medicines" placeholder="Enter medicine names..."></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-row">
+        <button class="back-btn" onclick="history.back()">← Back</button>
+        <button class="submit-btn" id="submitBtn">Submit ✓</button>
+    </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'pashu_cows';
+function readCows(){ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+function writeCows(obj){ localStorage.setItem(STORAGE_KEY, JSON.stringify(obj)); }
+function getCurrentId(){ return localStorage.getItem('currentCowId') || ''; }
+
+window.addEventListener('DOMContentLoaded', () => {
+    const id = getCurrentId();
+    if (!id) { alert('No active Cow ID. Start from Page 1.'); window.location.href='page1.html'; return; }
+    const cows = readCows();
+    const cow = cows[id] || {};
+    document.getElementById('insemination').value = cow.insemination || '';
+    document.getElementById('deworm').value = cow.deworm || '';
+    document.getElementById('pregnancy').value = cow.pregnancy || '';
+    document.getElementById('medicines').value = cow.medicines || '';
+});
+
+document.getElementById('submitBtn').addEventListener('click', () => {
+    const id = getCurrentId();
+    if (!id) { alert('Missing Cow ID.'); window.location.href='page1.html'; return; }
+
+    const insemination = document.getElementById('insemination').value;
+    const deworm = document.getElementById('deworm').value;
+    const pregnancy = document.getElementById('pregnancy').value;
+    const medicines = document.getElementById('medicines').value.trim();
+
+    const cows = readCows();
+    cows[id] = cows[id] || {};
+    cows[id].insemination = insemination || cows[id].insemination || '';
+    cows[id].deworm = deworm || cows[id].deworm || '';
+    cows[id].pregnancy = pregnancy || cows[id].pregnancy || '';
+    cows[id].medicines = medicines || cows[id].medicines || '';
+
+    // mark savedAt timestamp
+    cows[id].savedAt = new Date().toISOString();
+
+    writeCows(cows);
+
+    // clear current working id
+    localStorage.removeItem('currentCowId');
+
+    alert('Record saved successfully!');
+    window.location.href = 'main_interface.html';
+});
+</script>
+</body>
+</html>

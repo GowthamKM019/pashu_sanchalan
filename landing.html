@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PashuSanchalan</title>
+  <style>
+    /* Google Font */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to bottom, #cce7ff, #e6f9d8); /* sky to grass */
+      color: #3b1a1a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      width: 95%;
+      max-width: 1100px;
+      background: rgba(255, 248, 230, 0.95); /* warm cream card */
+      border-radius: 20px;
+      box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      padding: 60px 30px 120px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Grass footer */
+    .container::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 130px;
+      background: url("https://static.vecteezy.com/system/resources/previews/021/179/400/original/green-grass-border-flat-style-design-cartoon-summer-green-grass-nature-landscape-field-illustration-vector.jpg") repeat-x;
+      background-size: cover;
+      z-index: 1;
+    }
+
+    h1 {
+      font-size: 2.3rem;
+      font-weight: 500;
+      color: #4a2c00; /* earthy brown */
+    }
+
+    h2 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: #2e5902; /* deep green */
+      margin: 15px 0;
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: #444;
+      margin-bottom: 35px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 32px;
+      background: linear-gradient(135deg, #4caf50, #2e7d32); /* green button */
+      color: #fff;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 15px rgba(46, 125, 50, 0.4);
+      position: relative;
+      z-index: 2;
+    }
+
+    .btn:hover {
+      background: linear-gradient(135deg, #2e7d32, #4caf50);
+      transform: translateY(-3px);
+    }
+
+    .images {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: 60px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .images .Calf {
+      width: 260px;
+      height: 190px;
+      border-radius: 12px;
+      object-fit: cover;
+      mix-blend-mode: lighten; /* softer blending with background */
+      filter: brightness(1.05) contrast(0.95) drop-shadow(0px 6px 15px rgba(0, 0, 0, 0.25));
+      transition: transform 0.5s ease;
+    }
+
+    .images .Cow {
+      width: 260px;
+      height: fit-content;
+      border-radius: 12px;
+      object-fit: cover;
+      mix-blend-mode: lighten; /* softer blending with background */
+      filter: brightness(1.05) contrast(0.95) drop-shadow(0px 6px 15px rgba(0, 0, 0, 0.25));
+      transition: transform 0.5s ease;
+
+    }
+
+    .images img:hover {
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 768px) {
+      .images {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      h2 {
+        font-size: 2.5rem;
+      }
+
+      .images img {
+        width: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to</h1>
+    <h2>PashuSanchalan</h2>
+    <p>— Animal Management System —</p>
+    <a href="#" class="btn" btn onclick="window.location.href='login.html'">Let’s Get Started</a>
+    
+
+
+    <div class="images">
+      <img class="Calf" src="https://t4.ftcdn.net/jpg/01/62/45/81/360_F_162458167_GpGLco6DDKniyTzSAbeVrydHbtYMm2fs.jpg" alt="Calf">
+      <img class="Cow" src="http://upload.wikimedia.org/wikipedia/commons/0/05/Cow-bw.JPG" alt="Cow">
+    </div>
+  </div>
+</body>
+</html>
+

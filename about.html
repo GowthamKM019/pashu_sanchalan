@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About – PashuSanchalan</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: #e9f3ef;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding-top: 60px;
+        }
+
+        /* About Heading Tag */
+        .about-tag {
+            background: #dcdcdc;
+            padding: 12px 28px;
+            border-radius: 20px;
+            font-size: 24px;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 20px;
+            display: inline-block;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        /* Glass Card */
+        .about-box {
+            width: 75%;
+            max-width: 750px;
+            background: rgba(200, 230, 235, 0.65);
+            backdrop-filter: blur(6px);
+            padding: 40px;
+            border-radius: 35px;
+            box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .about-box ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        .about-box li {
+            font-size: 20px;
+            color: #5a6f73;
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .about-box li::before {
+            content: "•";
+            font-size: 28px;
+            color: #607d8b;
+        }
+
+
+    .header-row {
+    display: flex;
+    justify-content: space-between;   /* About → left, Back → right */
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto 20px auto;  
+         /* center + spacing */
+}
+
+.about-tag {
+    background: #dcdcdc;
+    padding: 12px 28px;
+    border-radius: 20px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #222;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.back-btn {
+    background: #dcdcdc;
+    padding: 12px 28px;
+    border-radius: 20px;
+    font-size: 20px;
+    color: #222;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: 0.2s ease;
+}
+
+.back-btn:hover {
+    background: #cfcfcf;
+}
+
+    </style>
+</head>
+<body>
+
+    <div>
+        <!-- Title Tag -->
+        
+        <div class="header-row" style = "font-weight: bold;">
+    <div class="about-tag"   >About</div>
+    <button class="back-btn" onclick="history.back()">Back</button>
+</div>
+
+        <!-- Pleasant Glass Box -->
+        <div class="about-box">
+            <ul>
+                <li>PashuSanchalan helps farmers manage livestock easily</li>
+                <li>Tracks animal health, breed, age, and milk capacity</li>
+                <li>Improves productivity with smart cattle analytics</li>
+            </ul>
+        </div>
+    </div>
+
+</body>
+</html>

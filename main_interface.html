@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Main Interface</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px}
+    .container{max-width:1200px;margin:0 auto;background:rgba(255,255,255,0.95);border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.3);overflow:hidden;backdrop-filter:blur(10px)}
+
+    /* HEADER */
+    .header{
+        background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+        padding:25px 40px;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        position:relative;
+    }
+
+    .welcome-text{color:white;font-size:28px;font-weight:600;letter-spacing:1px}
+
+    .menu-toggle{
+        background:rgba(255,255,255,0.2);
+        border:none;
+        color:white;
+        font-size:24px;
+        cursor:pointer;
+        padding:10px 15px;
+        border-radius:10px
+    }
+
+    /* DROPDOWN */
+    .dropdown-menu{
+        position:absolute;
+        top:80px;
+        right:40px;
+        background:white;
+        border-radius:15px;
+        box-shadow:0 10px 30px rgba(0,0,0,0.2);
+        min-width:220px;
+        opacity:0;
+        visibility:hidden;
+        transform:translateY(-10px);
+        transition:all .3s ease;
+        z-index:1000
+    }
+
+    .dropdown-menu.active{
+        opacity:1;
+        visibility:visible;
+        transform:translateY(0)
+    }
+
+    .dropdown-menu button{
+        width:100%;
+        padding:15px 20px;
+        border:none;
+        background:white;
+        color:#333;
+        text-align:left;
+        cursor:pointer;
+        font-size:16px;
+        display:flex;
+        align-items:center;
+        gap:10px;
+    }
+
+    .dropdown-menu button:hover{
+        background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+        color:white
+    }
+
+    /* CONTENT */
+    .content{padding:30px}
+    .search-section{margin-bottom:20px}
+    .search-label{font-size:20px;color:#333;margin-bottom:12px;font-weight:500}
+    .search-container{display:flex;gap:12px}
+    .search-input-wrapper{position:relative;flex:1}
+    .search-input{width:100%;padding:12px 42px 12px 16px;font-size:15px;border:2px solid #e0e0e0;border-radius:10px;outline:none}
+    .search-icon{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#999;font-size:16px}
+    .search-btn{padding:12px 20px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;border:none;border-radius:10px;font-size:15px;cursor:pointer}
+
+    .results{margin-top:20px;padding:20px;background:linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%);border-radius:12px;min-height:160px;display:flex;align-items:center;justify-content:center}
+
+    .not-found{text-align:center;color:#666}
+    .data-card{background:white;border-radius:12px;padding:18px;width:100%;box-shadow:0 5px 15px rgba(0,0,0,0.08)}
+    .data-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:10px}
+    .data-item{background:#f8f9fa;padding:12px;border-radius:8px}
+    .data-label{font-size:12px;color:#666;margin-bottom:6px}
+    .data-value{font-weight:600;color:#222}
+    .small{font-size:13px;color:#666}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="welcome-text">PashuSanchalan Dashboard</div>
+
+        <button class="menu-toggle" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- FIXED DROPDOWN -->
+        <div class="dropdown-menu" id="dropdownMenu">
+
+            <button onclick="window.location.href='about.html'">
+                <i class="fas fa-info-circle"></i> About
+            </button>
+
+            <button onclick="window.location.href='page1.html'">
+                <i class="fas fa-plus-circle"></i> Insert
+            </button>
+
+            <button onclick="clearAll()">
+                <i class="fas fa-trash"></i> Clear All Records
+            </button>
+
+            <button onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+
+        </div> <!-- correct dropdown closing -->
+
+    </div> <!-- correct header closing -->
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <div class="search-section">
+            <div class="search-label">Search Cow by ID</div>
+
+            <div class="search-container">
+                <div class="search-input-wrapper">
+                    <input id="searchInput" class="search-input" placeholder="Enter Cow ID (e.g. C001)" onkeypress="handleKeyPress(event)">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+
+                <button class="search-btn" onclick="searchById()">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </div>
+        </div>
+
+        <!-- RESULTS -->
+        <div id="results" class="results">
+
+            <div id="notFound" class="not-found">
+                <i class="fas fa-search" style="font-size:48px;color:#ccc"></i>
+                <div class="small">Enter an ID to search for records</div>
+            </div>
+
+            <div id="dataCard" class="data-card" style="display:none">
+
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                    <div><strong>ID:</strong> <span id="displayId"></span></div>
+                    <div class="small" id="savedAt"></div>
+                </div>
+
+                <div class="data-row">
+                    <div class="data-item"><div class="data-label">Breed</div><div class="data-value" id="breed"></div></div>
+                    <div class="data-item"><div class="data-label">Gender</div><div class="data-value" id="gender"></div></div>
+                    <div class="data-item"><div class="data-label">Birth Date</div><div class="data-value" id="birthDate"></div></div>
+                    <div class="data-item"><div class="data-label">Age (yrs)</div><div class="data-value" id="age"></div></div>
+                </div>
+
+                <div class="data-row">
+                    <div class="data-item"><div class="data-label">Color</div><div class="data-value" id="color"></div></div>
+                    <div class="data-item"><div class="data-label">Milk (L/day)</div><div class="data-value" id="milk"></div></div>
+                    <div class="data-item"><div class="data-label">Fat (%)</div><div class="data-value" id="fat"></div></div>
+                    <div class="data-item"><div class="data-label">Lactation No.</div><div class="data-value" id="lactation"></div></div>
+                </div>
+
+                <div class="data-row">
+                    <div class="data-item"><div class="data-label">Male Calf Count</div><div class="data-value" id="maleCalf"></div></div>
+                    <div class="data-item"><div class="data-label">Female Calf Count</div><div class="data-value" id="femaleCalf"></div></div>
+                    <div class="data-item"><div class="data-label">Origin</div><div class="data-value" id="origin"></div></div>
+                    <div class="data-item"><div class="data-label">Pregnancy</div><div class="data-value" id="pregnancy"></div></div>
+                </div>
+
+                <div class="data-row">
+                    <div style="grid-column:1/-1" class="data-item">
+                        <div class="data-label">Medicines</div>
+                        <div class="data-value" id="medicines"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div> <!-- content end -->
+
+</div> <!-- container end -->
+
+
+<script>
+const STORAGE_KEY = 'pashu_cows';
+function readCows(){ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+function formatDateISO(iso){ if(!iso) return ''; try{ const d=new Date(iso); return d.toLocaleDateString(); }catch(e){ return iso; } }
+
+/* DROPDOWN */
+function toggleMenu(){
+    document.getElementById('dropdownMenu').classList.toggle('active');
+}
+
+document.addEventListener('click', (e)=>{
+    const menu=document.getElementById('dropdownMenu');
+    const toggle=document.querySelector('.menu-toggle');
+
+    if(!menu.contains(e.target) && !toggle.contains(e.target)){
+        menu.classList.remove('active');
+    }
+});
+
+/* SEARCH */
+function searchById(){
+    const id = document.getElementById('searchInput').value.trim();
+    if(!id){ alert('Please enter Cow ID to search'); return; }
+
+    const cows = readCows();
+    const record = cows[id];
+
+    const notFound = document.getElementById('notFound');
+    const card = document.getElementById('dataCard');
+
+    if(record){
+        notFound.style.display = 'none';
+        card.style.display = 'block';
+
+        document.getElementById('displayId').textContent = id;
+        document.getElementById('breed').textContent = record.breed || '';
+        document.getElementById('gender').textContent = record.gender || '';
+        document.getElementById('birthDate').textContent = record.birthDate || '';
+        document.getElementById('age').textContent = record.age || '';
+        document.getElementById('color').textContent = record.color || '';
+        document.getElementById('milk').textContent = record.milk || '';
+        document.getElementById('fat').textContent = record.fat || '';
+        document.getElementById('lactation').textContent = record.lactation || '';
+        document.getElementById('maleCalf').textContent = record.maleCalf || 0;
+        document.getElementById('femaleCalf').textContent = record.femaleCalf || 0;
+        document.getElementById('origin').textContent = record.origin || '';
+        document.getElementById('pregnancy').textContent = record.pregnancy || '';
+        document.getElementById('medicines').textContent = record.medicines || '';
+        document.getElementById('savedAt').textContent = record.savedAt ? 
+            'Saved: ' + formatDateISO(record.savedAt) : '';
+    }
+
+    else {
+        card.style.display = 'none';
+        notFound.style.display = 'block';
+        notFound.innerHTML = `
+            <i class="fas fa-exclamation-circle" style="font-size:40px;color:#ccc"></i>
+            <div class="small">No record found for ID "<strong>${id}</strong>".</div>
+            <div class="small">Try creating it via Insert → Page 1.</div>`;
+    }
+}
+
+function handleKeyPress(e){
+    if(e.key === 'Enter') searchById();
+}
+
+/* CLEAR ALL */
+function clearAll(){
+    if(confirm('Clear all saved cow records from localStorage?')) {
+        localStorage.removeItem(STORAGE_KEY);
+        alert('All records cleared.');
+        location.reload();
+    }
+}
+
+/* LOGOUT */
+function logout(){
+    if(confirm('Are you sure you want to logout?')){
+        window.location.href = 'login.html';
+    }
+}
+</script>
+
+</body>
+</html>
